@@ -21,9 +21,9 @@ public:
     //inline mode functions
     void boat();
     void sit();
-    void cast();
     void reel();
 
+    void cast();
     void damage();
     int meter() const;
 private:
@@ -35,7 +35,7 @@ private:
     };
 
     Mode mode_;
-    bool is_leftward_;
+    bool is_rightward_;
     bool is_upward_;
     int fishing_delay_;
     int boating_speed_;
@@ -87,10 +87,8 @@ inline void Player::sit() {
 
 inline void Player::cast() {
     mode_ = Mode::casting;
-    hook_.home_y = first_y_;
-    hook_.home_x = first_x_ + ((is_leftward_ - 1) & PlayerConstant::PLAYER_WIDTH);
-    hook_.head_x = hook_.home_x;
-    hook_.head_y = hook_.home_y;
+    hook_.head_x = first_x_ + (is_rightward_ - 1 & PlayerConstant::PLAYER_WIDTH - 1);
+    hook_.head_y = hook_.home_y = first_y_;
     castLine();
 }
 

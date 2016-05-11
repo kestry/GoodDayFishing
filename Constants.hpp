@@ -59,7 +59,7 @@ namespace PlayerConstant {
     const int MIN_FIRST_Y = WorldConstant::WATER_Y - PLAYER_HEIGHT + 1;
     const int MAX_FIRST_X = WorldConstant::DOCK_X - PLAYER_WIDTH + 5;
     const int MAX_FIRST_Y = MIN_FIRST_Y;
-    const int MAX_FISHING_DELAY = 2;
+    const int MAX_FISHING_DELAY = 3;
     const int MAX_BOATING_SPEED = 3;
     const int MAX_BOATING_STOP_DELAY = 6;
     const int FULL_METER = 5;

@@ -19,7 +19,7 @@ Player::Player(const Sprite &boating_left_sprite,
     const Sprite &fishing_left_sprite,
     const Sprite &fishing_right_sprite)
     : mode_(Mode::boating)
-    , is_leftward_(true)
+    , is_rightward_(false)
     , is_upward_(true)
     , fishing_delay_(MAX_FISHING_DELAY)
     , boating_speed_(0)
@@ -34,6 +34,8 @@ Player::Player(const Sprite &boating_left_sprite,
     , fishing_left_sprite_(fishing_left_sprite)
     , fishing_right_sprite_(fishing_right_sprite)
 { }
+
+
 
 void Player::process() {
     switch (mode_) {
@@ -56,11 +58,11 @@ void Player::process() {
 
 void Player::boatingProcess() {
     if (GetAsyncKeyState(VK_LEFT)) {
-        is_leftward_ = true;
+        is_rightward_ = false;
         rowBoat();
     }
     else if (GetAsyncKeyState(VK_RIGHT)) {
-        is_leftward_ = false;
+        is_rightward_ = true;
         rowBoat();
     }
     if (GetAsyncKeyState(VK_DOWN)) {
@@ -114,35 +116,38 @@ void Player::update(World &world) {
         boatingUpdate();
         drawBoating(world);
         return;
+    case Mode::sitting:
+        drawFishing(world);
+        break;
     case Mode::casting:
         castingUpdate();
         drawFishing(world);
-        //hook_.draw(world);
+        hook_.draw(world);
         return;
     case Mode::reeling:
         reelingUpdate();
-        //fallthrough
-    case Mode::sitting:
         drawFishing(world);
+        if (mode_ == Mode::reeling) {
+            hook_.draw(world);
+        }
         break;
     default:
         break;
     }
-    if (mode_ == Mode::reeling) {
-        //hook_.draw(world);
-    }
+
     return;
 }
 
 void Player::boatingUpdate() {
     if (boating_speed_ > 0) {
-        if (is_leftward_) {
-            first_x_ -= boating_speed_;
-            first_x_ = first_x_ < MIN_FIRST_X ? MIN_FIRST_X : first_x_;
-        }
-        else {
+        if (is_rightward_) {
             first_x_ += boating_speed_;
             first_x_ = first_x_ > MAX_FIRST_X ? MAX_FIRST_X : first_x_;
+        }
+        else {
+            first_x_ -= boating_speed_;
+            first_x_ = first_x_ < MIN_FIRST_X ? MIN_FIRST_X : first_x_;
+
         }
         --boating_speed_;
         if (boating_speed_ == 0 && --boating_stop_delay_) {
@@ -185,7 +190,7 @@ void Player::castingUpdate() {
 void Player::reelingUpdate() {
     if (frames_ >= fishing_delay_) {
         frames_ = 0;
-        ++hook_.head_y;
+        --hook_.head_y;
     }
     if (hook_.head_y <= hook_.home_y) {
         mode_ = Mode::sitting;
@@ -196,14 +201,14 @@ void Player::reelingUpdate() {
 }
 
 void Player::drawBoating(World &world) {
-    (is_leftward_) ?
-        boating_left_sprite_.draw(world, first_x_, first_y_) :
-        boating_right_sprite_.draw(world, first_x_, first_y_);
+    (is_rightward_) ?
+        boating_right_sprite_.draw(world, first_x_, first_y_) :
+        boating_left_sprite_.draw(world, first_x_, first_y_);
 }
 
 void Player::drawFishing(World &world) {
-    (is_leftward_) ?
-        fishing_left_sprite_.draw(world, first_x_, first_y_) :
-        fishing_right_sprite_.draw(world, first_x_, first_y_);
+    (is_rightward_) ?
+        fishing_right_sprite_.draw(world, first_x_, first_y_) :
+        fishing_left_sprite_.draw(world, first_x_, first_y_);
 }
 

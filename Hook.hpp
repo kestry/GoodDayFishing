@@ -4,7 +4,6 @@
 
 class Hook {
 public:
-    int home_x;
     int home_y;
     int head_x;
     int head_y;

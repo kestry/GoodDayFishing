@@ -12,9 +12,9 @@
 namespace SpriteConstant {
     //use these constants to draw assets; assets are stored verbatim
     //note: update example if changing constants
-    //example:             sprite_in_file_and_vector = " (#) ";
-    //                         world_string_original = "-----"
-    //                world_string_after_sprite_draw = "-( )-"
+    //example:             sprite_in_file_and_vector = " (+_+#) ";
+    //                         world_string_original = "~~~~~~~~"
+    //                world_string_after_sprite_draw = "~(+_+ )~"
     const std::string FILE_EXTENSION = ".txt";
     const char SOLID_WHITE_CHAR = '#';
     const char TRANSPARENT_CHAR = ' ';
@@ -29,8 +29,8 @@ public:
     int     maxWidth() const;
     int     height() const;
     char    tile(int x, int y) const;
-    bool    draw(World &world, int stage_x0, int stage_y0) const; //true if full sprite is drawn
 
+    bool    draw(World &world, int stage_x0, int stage_y0) const; //true if full sprite is drawn
     bool    load(const std::string &fileName);
     void    loadLine(const std::string line);
     void    print() const;

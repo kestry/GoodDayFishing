@@ -11,7 +11,6 @@
 //             2) error with sprite design
 //             3) player width/height != sprite width/height
 #include "Player.hpp"
-
 using namespace PlayerConstant;
 
 Player::Player(const Sprite &boating_left_sprite,

@@ -8,8 +8,11 @@
 
 using namespace std;
 
+#include <iostream>
+#include <random>
 int main() {
     Game game;
     game.run();
+
     return 0;
 }

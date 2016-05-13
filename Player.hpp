@@ -5,12 +5,24 @@
 //a game written by Jean Park
 //created April 2016
 
-#pragma once
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
 
-#include "Constants.hpp"
 #include "Hook.hpp"
 #include "Sprite.hpp"
 
+namespace PlayerConstant {
+    const int PLAYER_WIDTH = 9;
+    const int PLAYER_HEIGHT = 4;
+    const int MIN_FIRST_X = WorldConstant::STAGE_FIRST_X;
+    const int MIN_FIRST_Y = WorldConstant::WATER_Y - PLAYER_HEIGHT + 1;
+    const int MAX_FIRST_X = WorldConstant::DOCK_X - PLAYER_WIDTH + 5;
+    const int MAX_FIRST_Y = MIN_FIRST_Y;
+    const int MAX_FISHING_DELAY = 3;
+    const int MAX_BOATING_SPEED = 3;
+    const int MAX_BOATING_STOP_DELAY = 6;
+    const int FULL_METER = 5;
+}
 
 class Player {
 public:
@@ -125,3 +137,5 @@ inline void Player::reelLine() {
     is_upward_ = true;
     fishing_delay_ = PlayerConstant::MAX_FISHING_DELAY;
 }
+
+#endif

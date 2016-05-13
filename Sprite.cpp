@@ -5,24 +5,33 @@
 
 #include <iostream>
 #include <fstream>
-#include "Constants.hpp"
+#include <sstream>
 #include "Sprite.hpp"
-
 using namespace std;
 
-Sprite::Sprite(const std::string &name) 
+Sprite::Sprite() {
+}
+
+Sprite::Sprite(const std::string &eitherFilenameOrAscii) 
     : max_width_(0) {
-    load(name);
+    //
+    if (eitherFilenameOrAscii.size() >= 4 &&
+        eitherFilenameOrAscii.substr(eitherFilenameOrAscii.size() - 4, 4) == SpriteConstant::FILE_EXTENSION) {
+        load(eitherFilenameOrAscii);
+    }
+    else { //else is sprite
+        loadLine(eitherFilenameOrAscii);
+    }
 }
 
 bool Sprite::load(const std::string &name) {
     ifstream file;
-    file.open("assets//" + name + ".txt");
+    file.open(name);
+
     if (file) {
         string line;
         while (getline(file, line)) {
-            max_width_ = line.size() > max_width_ ? line.size() : max_width_;
-            sprite_.push_back(line);
+            loadLine(line);
         }
     }
     else {
@@ -31,11 +40,22 @@ bool Sprite::load(const std::string &name) {
     return true;
 }
 
+void Sprite::loadLine(const std::string line) {
+    max_width_ = line.size() > max_width_ ? line.size() : max_width_;
+    sprite_.push_back(line);
+}
+
 //requirement: draw will be within bounds
 //future: if want partial draws
 //  option 1. implement check here
-//  option 2. allow passing of end limit (aka complete range)
-void Sprite::draw(World &world, int x0, int y0) const {
+//  option 2. allow passing of end limit (aka complete range), unfinished
+bool Sprite::draw(World &world, int stage_x0, int stage_y0) const {
+    //partial drawing:
+    //  start_x = 0 if stage_x0 > STAGE_FIRST_X, else
+    //          = stage_first_x - stage_x0
+    //   last_x = sprite_[y].size() - 1 if sprite_[y].size() - 1 + stage_x0 < STAGE_LAST_X, else
+    //          = stage_first_x - stage_x0
+
     for (int y = 0; y < sprite_.size(); y++) {
         for (int x = 0; x < sprite_[y].size(); x++) {
             char ch = sprite_[y][x];
@@ -46,9 +66,16 @@ void Sprite::draw(World &world, int x0, int y0) const {
                 ch = ' ';
                 //fallthrough
             default:
-                world.drawTile(ch, x + x0, y + y0);
+                world.drawTile(ch, x + stage_x0, y + stage_y0);
                 break;
             }
         }
+    }
+    return true;
+}
+
+void Sprite::print() const {
+    for (int y = 0; y < sprite_.size(); y++) {
+        cout << sprite_[y] << endl;
     }
 }

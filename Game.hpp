@@ -3,23 +3,12 @@
 
 //Good Day Fishing game written by Jean Park
 
-/*
-Personal Notes:
+#ifndef GAME_HPP
+#define GAME_HPP
 
-Suprisingly difficult decisions that MAY not mean anything.
-For example:
-Player in World?
-or Player in Game?
-
-
-*/
-
-#pragma once
-
+#include <memory>
 #include "Player.hpp" 
-    //includes Constants.hpp, Hook.hpp, Sprite.hpp, World.hpp
-        //Sprite.hpp includes <vector>, <string>
- 
+#include "FishManager.hpp" 
 
 class Game {
 public:
@@ -27,13 +16,16 @@ public:
     void    run();
 
 private:
-    bool    is_running_;
-    std::vector<Sprite> sprites_;
-    World   world_;
-    Player  player_;
+    std::unique_ptr<World> world_;
+    std::unique_ptr<Sprite[]> player_sprites_;
+    std::unique_ptr<FishManager> fish_manager_;
+    std::unique_ptr<Player> player_;
+    bool                is_running_;
 
     void    init();
     void    process();
     void    update();
     void    render();
 };
+
+#endif

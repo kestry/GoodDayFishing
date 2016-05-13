@@ -5,9 +5,9 @@
 //a game written by Jean Park
 //created April 2016
 
+#include <chrono>
 #include <iostream>
 #include <thread>
-#include <chrono>
 #include "Windows.h"
 #include "Game.hpp"
 using namespace std;
@@ -19,36 +19,48 @@ typedef std::chrono::duration<double, std::chrono::seconds::period> TimeInSecond
 
 const double TIME_PER_UPDATE(.5); //time in seconds
 
+const int NUM_PLAYER_SPRITES = 4;
+const std::string PLAYER_FILENAMES[] = { "assets/boating_left.txt"
+    , "assets/boating_right.txt"
+    , "assets/fishing_left.txt"
+    , "assets/fishing_right.txt" };
+
 Game::Game()
-    : is_running_(true)
-    , sprites_({ Sprite("boating_left"),
-    Sprite("boating_right"),
-    Sprite("fishing_left"),
-    Sprite("fishing_right") })
-    , player_(sprites_[0], sprites_[1],sprites_[2],sprites_[3])
-{ }
+    : world_(new World)
+    , player_sprites_(new Sprite[NUM_PLAYER_SPRITES])
+    , fish_manager_(new FishManager(*world_))
+    , is_running_(true) {
+    for (int i = 0; i < NUM_PLAYER_SPRITES; i++) {
+       player_sprites_[i].load(PLAYER_FILENAMES[i]);
+    }
+    player_ = make_unique<Player>(player_sprites_[0], player_sprites_[1], player_sprites_[2], player_sprites_[3]);
+}
 
 void Game::init() {
-    world_.update();
-    player_.update(world_);
-    world_.swap();
+    world_->update();
+    player_->update(*world_);
+    //fish_manager_->update();
+    fish_manager_->draw(*world_);
+    world_->swap();
 }
 
 void    Game::process() {
     if (GetAsyncKeyState(VK_ESCAPE)) {
         is_running_ = false;
     }
-    player_.process();
+    player_->process();
 }
 
 void    Game::update() {
-    world_.update();
-    player_.update(world_);
-    world_.swap();
+    world_->update();
+    player_->update(*world_);
+    //fish_manager_->update();
+    fish_manager_->draw(*world_);
+    world_->swap();
 }
 
 void    Game::render() {
-    world_.render();
+    world_->render();
 }
 
 void Game::run() {

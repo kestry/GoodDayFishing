@@ -1,0 +1,10 @@
+const components by species:
+body_size
+POINTS
+SPRITE_SIZE
+SPRITE
+Name
+
+
+Hook:
+outer_weight

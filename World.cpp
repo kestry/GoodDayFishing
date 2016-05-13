@@ -3,7 +3,6 @@
 
 //Good Day Fishing written by Jean Park
 
-//World contains SpriteMap and initial World map
 #include <iostream>
 #include "World.hpp"
 using std::cout;
@@ -12,7 +11,14 @@ using namespace WorldConstant;
 
 // Constructors ===========================================
 
-World::World() : isEbb_(false), backBuffer_(0), ebbDelay_(6), frames_(0) {
+World::World() 
+    : mt_engine_(random_seed_())
+    , inclusive_stage_x_distribution_(STAGE_FIRST_X, STAGE_LAST_X)
+    , inclusive_bool_distribution_(0, 1) 
+    , isEbb_(false)
+    , ebbDelay_(6)
+    , frames_(0)
+    , backBuffer_(0) {
     initBorders();
 }
 

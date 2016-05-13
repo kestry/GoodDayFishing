@@ -1,6 +1,12 @@
-#pragma once
+#ifndef HOOK_HPP
+#define HOOK_HPP
 
+#include "Fish.hpp"
 #include "World.hpp"
+
+namespace HookConstant {
+    const char HOOK_CHAR = 'j';
+}
 
 class Hook {
 public:
@@ -20,3 +26,5 @@ private:
     int hook_size_;
     int score_;
 };
+
+#endif

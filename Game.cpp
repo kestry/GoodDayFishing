@@ -39,7 +39,7 @@ Game::Game()
 void Game::init() {
     world_->update();
     player_->update(*world_);
-    fish_manager_->update();
+    fish_manager_->update(*world_);
     fish_manager_->draw(*world_);
     world_->swap();
 }
@@ -54,7 +54,7 @@ void    Game::process() {
 void    Game::update() {
     world_->update();
     player_->update(*world_);
-    fish_manager_->update();
+    fish_manager_->update(*world_);
     fish_manager_->draw(*world_);
     world_->swap();
 }

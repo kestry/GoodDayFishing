@@ -39,19 +39,14 @@ public:
     Fish();
     Fish(const FishSpecies &species);
     
+    int size();
     void update();
     
-
-    void            setSpecies(const FishSpecies &species);
-    void            swapDirection();
-    void            draw(World &world);
-
-private:
-    //can have this as a single char bitmap
-    bool fish_state_;
-
+    void swapDirection();
+    void draw(World &world);
+    void killIfOffscreen();
 };
-inline void            Fish::setSpecies(const FishSpecies &newSpecies) { species = &newSpecies; }
-inline void            Fish::swapDirection() { velocity = -velocity; }
+inline void Fish::swapDirection() { velocity = -velocity; }
+inline int Fish::size() { return species->sprite_left.size(); }
 
 #endif

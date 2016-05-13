@@ -26,6 +26,7 @@ public:
     Sprite(const std::string &fileName);
 
     //inline functions
+    int     size() const;
     int     maxWidth() const;
     int     height() const;
     char    tile(int x, int y) const;
@@ -38,7 +39,7 @@ private:
     int max_width_;
     std::vector<std::string> sprite_;
 };
-
+inline int Sprite::size() const { return max_width_; }
 inline int Sprite::maxWidth() const { return max_width_; }
 inline int Sprite::height() const { return sprite_.size(); }
 inline char Sprite::tile(int x, int y) const { return sprite_[y][x]; }

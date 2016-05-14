@@ -52,6 +52,11 @@ void World::update() {
         ebb();
         frames_ = 0;
     }
+}
+
+// Draw ===================================================
+
+void World::draw() {
     clearStage();
     drawWater();
     drawDock();

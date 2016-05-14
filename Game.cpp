@@ -21,9 +21,9 @@ const double TIME_PER_UPDATE(.5); //time in seconds
 
 const int NUM_PLAYER_SPRITES = 4;
 const std::string PLAYER_FILENAMES[] = { "assets/boating_left.txt"
-    , "assets/boating_right.txt"
-    , "assets/fishing_left.txt"
-    , "assets/fishing_right.txt" };
+, "assets/boating_right.txt"
+, "assets/fishing_left.txt"
+, "assets/fishing_right.txt" };
 
 Game::Game()
     : world_(new World)
@@ -31,36 +31,45 @@ Game::Game()
     , fish_manager_(new FishManager(*world_))
     , is_running_(true) {
     for (int i = 0; i < NUM_PLAYER_SPRITES; i++) {
-       player_sprites_[i].load(PLAYER_FILENAMES[i]);
+        player_sprites_[i].load(PLAYER_FILENAMES[i]);
     }
     player_ = make_unique<Player>(player_sprites_[0], player_sprites_[1], player_sprites_[2], player_sprites_[3]);
 }
 
 void Game::init() {
     world_->update();
-    player_->update(*world_);
-    fish_manager_->update(*world_);
-    fish_manager_->draw(*world_);
-    world_->swap();
+    fish_manager_->update();
+    player_->update();
+    draw();
 }
 
-void    Game::process() {
+void Game::process() {
     if (GetAsyncKeyState(VK_ESCAPE)) {
         is_running_ = false;
     }
     player_->process();
 }
 
-void    Game::update() {
+void Game::update() {
     world_->update();
-    player_->update(*world_);
-    fish_manager_->update(*world_);
+    fish_manager_->update();
+    player_->update();
+    fish_manager_->generateFish(*world_);
+}
+
+void Game::draw() {
+    world_->draw();
     fish_manager_->draw(*world_);
+    player_->draw(*world_);
+    if (player_->mode() > Mode::sitting) {
+        player_->hook.draw(*world_);
+    }
     world_->swap();
 }
 
-void    Game::render() {
+void Game::render() {
     world_->render();
+    fish_manager_->draw(*world_);
 }
 
 void Game::run() {
@@ -75,12 +84,13 @@ void Game::run() {
         accumulatedTime += elapsedTime;
         process();
         while (accumulatedTime >= TIME_PER_UPDATE) {
+            cout << "update" << endl;
             update();
             accumulatedTime -= TIME_PER_UPDATE;
             gameTime += TIME_PER_UPDATE;
         }
         render();
         this_thread::sleep_for(chrono::milliseconds(100));
-        cout << gameTime << endl;
+        cout << "test2" << gameTime << endl;
     }
 }

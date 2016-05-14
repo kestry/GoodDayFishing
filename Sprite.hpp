@@ -23,6 +23,7 @@ namespace SpriteConstant {
 class Sprite {
 public:
     Sprite();
+    Sprite(char c);
     Sprite(const std::string &fileName);
 
     //inline functions

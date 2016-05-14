@@ -49,6 +49,7 @@ public:
     World();
 
     void    update();
+    void    draw();
     void    render();
 
     //inline public functions

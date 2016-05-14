@@ -4,8 +4,9 @@
 #include <string>
 #include "Sprite.hpp"
 #include "World.hpp"
-
-enum class BodySize {
+#include <iostream>
+using namespace std;
+enum class SwallowSize{
     hook,       //j
     starfish,   //*
     //jellyfish,  //Q
@@ -24,29 +25,51 @@ const struct FishSpecies {
     std::string name;
     Sprite sprite_left;
     Sprite sprite_right;
-    BodySize body_size;
+    SwallowSize swallow_size;
     int points;
+
+    FishSpecies() {}
+    FishSpecies(std::string n
+        , Sprite sl
+        , Sprite sr
+        , SwallowSize ss
+        , int p) {
+        name = n;
+        sprite_left = sl;
+        sprite_right = sr;
+        swallow_size = ss;
+        points = p;
+    }
 };
 
 class Fish {
 public:
     int head_x;
     int head_y;
-    int velocity;
+    int x_velocity;
+    int y_velocity;
     FishState state;
     const FishSpecies* species;
 
     Fish();
     Fish(const FishSpecies &species);
     
-    int size();
     void update();
+
+    void revive();
+    void capture();
+    void kill();
+
+    int width();
     
     void swapDirection();
     void draw(World &world);
-    void killIfOffscreen();
+    void killOffscreenFish();
+
+private:
+    int is_leftward_;
 };
-inline void Fish::swapDirection() { velocity = -velocity; }
-inline int Fish::size() { return species->sprite_left.size(); }
+inline void Fish::swapDirection() { x_velocity = -x_velocity; }
+inline int Fish::width() { return species->sprite_left.size(); }
 
 #endif

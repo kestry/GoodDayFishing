@@ -11,20 +11,27 @@ namespace HookConstant {
 class Hook {
 public:
     int home_y;
-    int head_x;
-    int head_y;
+    int home_x;
+    Fish current_hook;
 
     Hook();
-    void size() const;
 
-    void setSize();
+    int points();
+  
+    bool checkFish(Fish* newFish);
+    void catchFish(Fish* newFish);
+    void Hook::reset();
     void draw(World &world);
-
 private:
-    int isHooked_;
-    int hook_width_;
-    int hook_size_;
-    int score_;
+    const FishSpecies* const hookSpecies_;
+    Fish* default_hook_;
+    int num_caught_;
+
+    int multiplier();
+    bool isInXRange(Fish* newFish);
 };
+
+inline int Hook::points() { return multiplier() * current_hook.species->points; }
+inline int Hook::multiplier() { return num_caught_ + 1; }
 
 #endif

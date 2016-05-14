@@ -10,6 +10,11 @@
 using namespace std;
 
 Sprite::Sprite() {
+
+}
+
+Sprite::Sprite(char c) {
+    sprite_.push_back(string(1, c));
 }
 
 Sprite::Sprite(const std::string &eitherFilenameOrAscii) 
@@ -45,10 +50,6 @@ void Sprite::loadLine(const std::string line) {
     sprite_.push_back(line);
 }
 
-//requirement: draw will be within bounds
-//future: if want partial draws
-//  option 1. implement check here
-//  option 2. allow passing of end limit (aka complete range), unfinished
 bool Sprite::draw(World &world, int stage_x0, int stage_y0) const {
     bool isFullDraw = true;
     int sprite_first_x = 0;

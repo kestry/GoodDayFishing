@@ -13,18 +13,19 @@
 class Game {
 public:
     Game();
-    void    run();
+    void run();
 
 private:
     std::unique_ptr<World> world_;
     std::unique_ptr<Sprite[]> player_sprites_;
     std::unique_ptr<FishManager> fish_manager_;
     std::unique_ptr<Player> player_;
-    bool                is_running_;
+    bool is_running_;
 
     void    init();
     void    process();
     void    update();
+    void    draw();
     void    render();
 };
 

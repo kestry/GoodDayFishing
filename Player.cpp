@@ -11,6 +11,8 @@
 //             2) error with sprite design
 //             3) player width/height != sprite width/height
 #include "Player.hpp"
+#include <iostream>
+using namespace std;
 using namespace PlayerConstant;
 
 Player::Player(const Sprite &boating_left_sprite,
@@ -20,10 +22,10 @@ Player::Player(const Sprite &boating_left_sprite,
     : mode_(Mode::boating)
     , is_rightward_(false)
     , is_upward_(true)
-    , fishing_delay_(MAX_FISHING_DELAY)
+    //, frames_(0)
+    //, fishing_delay_(MAX_FISHING_DELAY)
     , boating_speed_(0)
     , boating_stop_delay_(MAX_BOATING_STOP_DELAY)
-    , frames_(0)
     , first_x_(MAX_FIRST_X)
     , first_y_(MAX_FIRST_Y)
     , score_(0)
@@ -33,8 +35,6 @@ Player::Player(const Sprite &boating_left_sprite,
     , fishing_left_sprite_(fishing_left_sprite)
     , fishing_right_sprite_(fishing_right_sprite)
 { }
-
-
 
 void Player::process() {
     switch (mode_) {
@@ -87,53 +87,42 @@ void Player::castingProcess() {
         reel();
         return;
     }
-    if (fishing_delay_ > 0 && GetAsyncKeyState(VK_DOWN)) {
-        fishFaster();
-        return;
-    }
+    //if (fishing_delay_ > 0 && GetAsyncKeyState(VK_DOWN)) {
+    //    fishFaster();
+    //    return;
+    //}
 }
 
 void Player::reelingProcess() {
-    if (hook_.head_y == hook_.home_y) {
+    if (hook.current_hook.head_y == hook.home_y) {
         sit();
         return;
     }
-    if (fishing_delay_ > 0 && GetAsyncKeyState(VK_UP)) {
-        fishFaster();
-        return;
-    }
-    if (fishing_delay_ < MAX_FISHING_DELAY && GetAsyncKeyState(VK_DOWN)) {
-        fishSlower();
-        return;
-    }
+    //if (fishing_delay_ > 0 && GetAsyncKeyState(VK_UP)) {
+    //    fishFaster();
+    //    return;
+    //}
+    //if (fishing_delay_ < MAX_FISHING_DELAY && GetAsyncKeyState(VK_DOWN)) {
+    //    fishSlower();
+    //    return;
+    //}
 }
 
-void Player::update(World &world) {
-    ++frames_;
+void Player::update() {
+    //++frames_;
     switch (mode_) {
     case Mode::boating:
         boatingUpdate();
-        drawBoating(world);
         return;
     case Mode::sitting:
-        drawFishing(world);
-        break;
+        return;
     case Mode::casting:
         castingUpdate();
-        drawFishing(world);
-        hook_.draw(world);
         return;
     case Mode::reeling:
         reelingUpdate();
-        drawFishing(world);
-        if (mode_ == Mode::reeling) {
-            hook_.draw(world);
-        }
-        break;
-    default:
-        break;
+        return;
     }
-
     return;
 }
 
@@ -174,12 +163,14 @@ void Player::boatingUpdate() {
 //        }
 //      - hook.draw();
 void Player::castingUpdate() {
-    if (frames_ >= fishing_delay_) {
-        frames_ = 0;
-        ++hook_.head_y;
-    }
-    if (hook_.head_y > WorldConstant::STAGE_LAST_Y) {
-        hook_.head_y = WorldConstant::STAGE_LAST_Y;
+    cerr << "Player::castingUpdate(World &world)" << endl;
+
+    //if (frames_ >= fishing_delay_) {
+    //    frames_ = 0;
+        ++hook.current_hook.head_y;
+    //}
+    if (hook.current_hook.head_y > WorldConstant::STAGE_LAST_Y) {
+        hook.current_hook.head_y = WorldConstant::STAGE_LAST_Y;
         reel();
     }
     return;
@@ -187,16 +178,21 @@ void Player::castingUpdate() {
 
 //bigger fish becomes hook
 void Player::reelingUpdate() {
-    if (frames_ >= fishing_delay_) {
-        frames_ = 0;
-        --hook_.head_y;
-    }
-    if (hook_.head_y <= hook_.home_y) {
+    //if (frames_ >= fishing_delay_) {
+    //    frames_ = 0;
+        --hook.current_hook.head_y;
+    //}
+    if (hook.current_hook.head_y <= hook.home_y) {
         mode_ = Mode::sitting;
+        hook.reset();
         //updateScore();
         //resetHook();
     }
     return;
+}
+
+void Player::draw(World &world) {
+    (mode_ == Mode::boating) ? drawBoating(world) : drawFishing(world);
 }
 
 void Player::drawBoating(World &world) {

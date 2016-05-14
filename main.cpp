@@ -6,10 +6,6 @@
 
 #include "Game.hpp"
 
-using namespace std;
-
-#include <iostream>
-#include <random>
 int main() {
     Game game;
     game.run();

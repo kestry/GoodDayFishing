@@ -17,7 +17,7 @@ typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::high_resolution_clock::time_point Time_point;
 typedef std::chrono::duration<double, std::chrono::seconds::period> TimeInSeconds;
 
-const double TIME_PER_UPDATE(.5); //time in seconds
+const double TIME_PER_UPDATE(.3); //time in seconds
 
 const int NUM_PLAYER_SPRITES = 4;
 const std::string PLAYER_FILENAMES[] = { "assets/boating_left.txt"
@@ -38,8 +38,7 @@ Game::Game()
 
 void Game::init() {
     world_->update();
-    fish_manager_->update();
-    player_->update();
+    fish_manager_->generateFish(*world_);
     draw();
 }
 
@@ -51,10 +50,10 @@ void Game::process() {
 }
 
 void Game::update() {
+    fish_manager_->generateFish(*world_);
     world_->update();
     fish_manager_->update();
     player_->update();
-    fish_manager_->generateFish(*world_);
 }
 
 void Game::draw() {

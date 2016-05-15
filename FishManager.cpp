@@ -1,6 +1,7 @@
 #include "FishManager.hpp"
 #include <iostream>
 using namespace std;
+
 FishManager::FishManager(World &world)
     : bird_animation_delay_(0)
     , numHooked_(0)
@@ -36,8 +37,8 @@ inline void FishManager::initialize() {
 }
 
 void FishManager::loadSpecies() {
-    loadOneSpecies(0, "seagull", "v", "m", SwallowSize::nothing, 0);
-    loadOneSpecies(1, "poop", ".", ".", SwallowSize::nothing, 0);
+    loadOneSpecies(0, "poop", ".", ".", SwallowSize::nothing, 0);
+    loadOneSpecies(1, "seagull", "v", "m", SwallowSize::nothing, 0);
     loadOneSpecies(2, "hook", "j", "j", SwallowSize::nothing, 0);
     loadOneSpecies(3, "starfish", "*", "*", SwallowSize::starfish, 500);
     loadOneSpecies(4, "jellyfish", "Q", "Q", SwallowSize::starfish, -800);
@@ -107,7 +108,7 @@ void FishManager::generatePoop(World &world) {
         poop_->state == FishState::dead && !randomPoopSpawn(world)) {
         poop_->sink();
         poop_->head_x = bird_->head_x;
-        poop_->head_y = bird_->head_y + 1;
+        poop_->head_y = bird_->head_y;
     }
 }
 
@@ -172,6 +173,7 @@ int fishHash(int y) {
         GameObjectConstant::FISH_Y_SPACING;
 }
 
+//Requirement: requires Player to call to update catch 
 //Checks if fish is hooked and then catches the fish
 //purpose: updates hook to new caught fish, and allows Player to retrieve points
 //note: uses private nonmember function, fishHash, above
@@ -210,8 +212,8 @@ bool FishManager::hasBittenLength(const Fish& fish) const {
 }
 
 void FishManager::draw(World &world) {
-    for (int iFish = 0; iFish < GameObjectConstant::GAME_OBJECT_ARRAY_SIZE; iFish++) {
-        if (fish_array_[iFish].state != FishState::dead) {
+    for (int iFish = GameObjectConstant::I_FIRST_EARLY_DRAW; iFish < GameObjectConstant::GAME_OBJECT_ARRAY_SIZE; iFish++) {
+        if (fish_array_[iFish].state > FishState::dead) {
             fish_array_[iFish].draw(world);
         }
     }
@@ -219,5 +221,40 @@ void FishManager::draw(World &world) {
         for (int line_y = hook_home_y_; line_y < hook_->head_y; line_y++) {
             world.drawTile('|', hook_home_x_, line_y);
         }
+    }
+}
+
+bool FishManager::isPoopCollision(int x, int y) {
+    if (poop_->state == FishState::pending &&
+        x == poop_->head_x &&
+        y == poop_->head_y) {
+        poop_->kill();
+        return true;
+    }
+    return false;
+}
+
+void FishManager::lateUpdate(World &world) {
+    switch (poopTile(world)) {
+    case ' ':
+        break;
+    case '-':
+    case '~':
+    case '_':
+        poop_->state = FishState::dead;
+    default:
+        poop_->state = FishState::pending;
+    }
+}
+
+void FishManager::lateDraw(World &world) {
+    switch (poop_->state) {
+    case FishState::pending:
+        poop_->kill();
+        //fallthrough
+    case FishState::dead:
+        break;
+    default:
+        poop_->draw(world);
     }
 }

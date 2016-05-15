@@ -5,9 +5,10 @@
 #include "World.hpp"
 
 enum class FishState {
-    dead,
-    caught,
-    alive
+    pending,    //transition state (example: poop pending death or draw)
+    dead,       //stationary
+    caught,     //moves vertically
+    alive       //moves horizontally
 };
 
 class Fish {

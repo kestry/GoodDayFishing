@@ -29,7 +29,7 @@ namespace PlayerConstant {
     //const int MAX_FISHING_DELAY = 3;
     const int MAX_BOATING_SPEED = 3;
     const int MAX_BOATING_STOP_DELAY = 6;
-    const int FULL_METER = 5;
+    const int FULL_HEALTH = 3;
 }
 
 class Player {
@@ -37,6 +37,7 @@ public:
     Player(const Sprite&, const Sprite&, const Sprite&, const Sprite&);
     void process(FishManager &);
     void update(FishManager &);
+    void lateUpdate(FishManager &);
     void draw(World &);
 
     //inline mode functions
@@ -46,9 +47,7 @@ public:
     void reel(FishManager &);
 
     Mode mode();
-    void damage();
-    void addPoints(int);
-    int meter() const;
+    int health() const;
 private:
     Mode mode_;
     bool is_rightward_;
@@ -62,7 +61,7 @@ private:
     int first_x_;
     int first_y_;
     int score_;
-    int meter_;
+    int health_;
     const Sprite &boating_left_sprite_;
     const Sprite &boating_right_sprite_;
     const Sprite &fishing_left_sprite_;
@@ -117,6 +116,10 @@ inline void Player::rowBoat() {
     boating_stop_delay_ = PlayerConstant::MAX_BOATING_STOP_DELAY;
 }
 
+inline int Player::health() const {
+    return health_;
+}
+
 // fishing helper functions -----------------------------
 
 //inline void Player::fishFaster() {
@@ -130,6 +133,5 @@ inline void Player::rowBoat() {
 
 // update helper functions ---------------------------
 
-inline void Player::addPoints(int points) { score_ += points; }
 
 #endif

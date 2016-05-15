@@ -29,7 +29,7 @@ Game::Game()
     : world_(new World)
     , player_sprites_(new Sprite[NUM_PLAYER_SPRITES])
     , fish_manager_(new FishManager(*world_))
-    , is_running_(true) {
+    , state_(GameState::running) {
     for (int i = 0; i < NUM_PLAYER_SPRITES; i++) {
         player_sprites_[i].load(PLAYER_FILENAMES[i]);
     }
@@ -39,19 +39,23 @@ Game::Game()
 void Game::init() {
     world_->update();
     //needed for first hook somehow...
-    //fish_manager_->regenerate(*world_);
+    fish_manager_->regenerate(*world_);
     draw();
+    world_->swap();
 }
 
 void Game::process() {
     if (GetAsyncKeyState(VK_ESCAPE)) {
-        is_running_ = false;
+        state_ = GameState::exit;
     }
     player_->process(*fish_manager_);
 }
 
 void Game::update() {
+    //regenerate world
     fish_manager_->regenerate(*world_);
+
+    //update world
     world_->update();
     fish_manager_->update();
     player_->update(*fish_manager_);
@@ -61,6 +65,19 @@ void Game::draw() {
     world_->draw();
     fish_manager_->draw(*world_);
     player_->draw(*world_);
+}
+
+void Game::lateUpdate() {
+    fish_manager_->lateUpdate(*world_);
+    player_->lateUpdate(*fish_manager_);
+    cout << player_->health() << endl;
+    if (player_->health() <= 0) {
+        state_ = GameState::game_over;
+    }
+}
+
+void Game::lateDraw() {
+    fish_manager_->lateDraw(*world_);
     world_->swap();
 }
 
@@ -73,7 +90,7 @@ void Game::run() {
     auto currentTime = Clock::now();
     double accumulatedTime = 0.0;
     double gameTime = 0.0;
-    while (is_running_) {
+    while (state_ == GameState::running) {
         init();
         auto newTime = Clock::now();
         double elapsedTime = TimeInSeconds(newTime - currentTime).count();
@@ -84,9 +101,12 @@ void Game::run() {
             update();
             accumulatedTime -= TIME_PER_UPDATE;
             gameTime += TIME_PER_UPDATE;
+            draw();
+            lateUpdate();
+            lateDraw();
         }
         render();
-        this_thread::sleep_for(chrono::milliseconds(100));
-        cout << "test4" << gameTime << endl;
+        this_thread::sleep_for(chrono::milliseconds(200));
+        //cout << "test4" << gameTime << endl;
     }
 }

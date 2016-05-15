@@ -27,7 +27,7 @@ Player::Player(const Sprite &boating_left_sprite,
     , first_x_(MAX_FIRST_X)
     , first_y_(MAX_FIRST_Y)
     , score_(0)
-    , meter_(FULL_METER)
+    , health_(FULL_HEALTH)
     , boating_left_sprite_(boating_left_sprite)
     , boating_right_sprite_(boating_right_sprite)
     , fishing_left_sprite_(fishing_left_sprite)
@@ -125,6 +125,12 @@ void Player::fishingUpdate(FishManager &fish_manager) {
         score_ += fish_manager.points();
     }
     return;
+}
+
+void Player::lateUpdate(FishManager &fish_manager) {
+    if (fish_manager.isPoopCollision(head_x_, head_y_)) {
+        --health_;
+    }
 }
 
 void Player::draw(World &world) {

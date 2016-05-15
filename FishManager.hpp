@@ -11,14 +11,14 @@ namespace SpeciesConstant {
     //NOTE: Fish are the last segment for both species and game objects
     //=======================================
     //species hardcoded into FishManager::load()
-    const int NUM_BIRD_SPECIES = 1;
     const int NUM_POOP_SPECIES = 1;
+    const int NUM_BIRD_SPECIES = 1;
     const int NUM_HOOK_SPECIES = 1;
     const int NUM_FISH_SPECIES = 5;
-    const int NUM_SPECIES = NUM_BIRD_SPECIES + NUM_POOP_SPECIES +
+    const int NUM_SPECIES = NUM_POOP_SPECIES + NUM_BIRD_SPECIES +
                 NUM_HOOK_SPECIES + NUM_FISH_SPECIES;
-    const int I_BIRD_SPECIES = 0;
-    const int I_POOP_SPECIES = 1;
+    const int I_POOP_SPECIES = 0;
+    const int I_BIRD_SPECIES = 1;
     const int I_HOOK_SPECIES = 2;
     const int I_FIRST_FISH_SPECIES = 3;
 }
@@ -33,15 +33,16 @@ namespace GameObjectConstant {
 
     //Number of Game Objects (in array)
     //(Note: must adjust index constants below)
-    const int NUM_BIRD = 1;
     const int NUM_POOP = 1;
+    const int NUM_BIRD = 1;
     const int NUM_HOOK = 1;
     //note: @see NUM_FISH below
 
     //Game Object Indices 
     //(Note: must be in relation to above)
-    const int I_BIRD = 0;
-    const int I_POOP = 1;
+    const int I_FIRST_EARLY_DRAW = 1;
+    const int I_POOP = 0;
+    const int I_BIRD = 1;
     const int I_HOOK = 2;
     const int I_FIRST_FISH = 3;
 
@@ -68,12 +69,14 @@ public:
     void            update();
     void            regenerate(World &);
     void            draw(World &);
+    void            lateUpdate(World &);
+    void            lateDraw(World &);
 
     void            castHook(int home_x, int home_y);
     void            reelHook();                         //inline
     bool            isFishing();                        //inline
     bool            isFishingCollision();
-    bool            isPlayerHeadCollision();
+    bool            isPoopCollision(int, int);
     int             points() const;                     //inline
 
 private:
@@ -115,11 +118,17 @@ private:
     bool            isReeling();                        //inline
     void            restHook();                         //inline
     void            checkHookPosition();
-    void            checkPoopPosition();
 
     //collision helper functions
     bool            hasBittenLength(const Fish&) const;
     void            doCatch(Fish* fish);
+
+    //late update functions (aka after initial draw())
+    void            checkPoopPosition();
+    char            poopTile(World &world);
+
+
+
 };
 inline int FishManager::points() const { return numHooked_ * hook_->species->points; }
 
@@ -135,5 +144,7 @@ inline const Species& FishManager::randomSpecies(World &world) const {
 inline size_t FishManager::randomBaseY(World &world) { return inclusive_base_y_distribution_(world.engine()); }
 inline size_t FishManager::randomBirdSpawn(World &world) { return inclusive_bird_odds_distribution_(world.engine()); }
 inline size_t FishManager::randomPoopSpawn(World &world) { return inclusive_poop_odds_distribution_(world.engine()); }
+
+inline char FishManager::poopTile(World &world) { return world.tile(poop_->head_x, poop_->head_y); }
 
 #endif

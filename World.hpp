@@ -92,7 +92,7 @@ private:
 static BOOL gotoxy(const WORD x, const WORD y);
 
 inline void World::swap() { backBuffer_ = 1 - backBuffer_; }
-inline char World::tile(int x, int y) { return buffers_[frontBuffer()][y][x]; }
+inline char World::tile(int x, int y) { return buffers_[backBuffer()][y][x]; }
 inline void World::drawTile(char c, int x, int y) { buffers_[backBuffer()][y][x] = c; }
 inline void World::ebb() { isEbb_ = !isEbb_; }
 

@@ -1,19 +1,8 @@
 #ifndef FISH_HPP
 #define FISH_HPP
 
-#include <string>
-#include "Sprite.hpp"
+#include "Species.hpp"
 #include "World.hpp"
-#include <iostream>
-using namespace std;
-enum class SwallowSize{
-    nothing,       //j
-    starfish,   //*
-    //jellyfish,  //Q
-    goldfish,   //o<
-    mackerel,   //<><
-    tuna,       //<")<
-};
 
 enum class FishState {
     dead,
@@ -21,36 +10,15 @@ enum class FishState {
     alive
 };
 
-const struct FishSpecies {
-    std::string name;
-    Sprite sprite_left;
-    Sprite sprite_right;
-    SwallowSize swallow_size;
-    int points;
-
-    FishSpecies() {}
-    FishSpecies(std::string n
-        , Sprite sl
-        , Sprite sr
-        , SwallowSize ss
-        , int p) {
-        name = n;
-        sprite_left = sl;
-        sprite_right = sr;
-        swallow_size = ss;
-        points = p;
-    }
-};
-
 class Fish {
 public:
     int head_x;
     int head_y;
     FishState state;
-    const FishSpecies* species;
+    const Species* species;
 
     Fish();
-    Fish(const FishSpecies &species);
+    Fish(const Species &species);
     
     void update();
     void draw(World &world);

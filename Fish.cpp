@@ -9,7 +9,7 @@ Fish::Fish()
     , state(FishState::dead) {
 }
 
-Fish::Fish(const FishSpecies &newSpecies) 
+Fish::Fish(const Species &newSpecies) 
     : head_x(0)
     , head_y(0)
     , is_leftward_(false)

@@ -6,6 +6,7 @@
 #ifndef SPRITE_HPP
 #define SPRITE_HPP
 
+#include <string>
 #include <vector>
 #include "World.hpp"
 

@@ -46,23 +46,20 @@ void Game::process() {
     if (GetAsyncKeyState(VK_ESCAPE)) {
         is_running_ = false;
     }
-    player_->process();
+    player_->process(*fish_manager_);
 }
 
 void Game::update() {
     fish_manager_->generateFish(*world_);
     world_->update();
     fish_manager_->update();
-    player_->update();
+    player_->update(*fish_manager_);
 }
 
 void Game::draw() {
     world_->draw();
     fish_manager_->draw(*world_);
     player_->draw(*world_);
-    if (player_->mode() > Mode::sitting) {
-        player_->hook.draw(*world_);
-    }
     world_->swap();
 }
 

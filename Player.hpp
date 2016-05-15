@@ -8,16 +8,15 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include "Hook.hpp"
+#include "FishManager.hpp"
 #include "Sprite.hpp"
 
-class Hook;
+class FishManager;
 
 enum class Mode {
     boating,
     sitting,
-    casting,
-    reeling
+    fishing
 };
 
 namespace PlayerConstant {
@@ -35,20 +34,18 @@ namespace PlayerConstant {
 
 class Player {
 public:
-    Hook hook;
-
     Player(const Sprite&, const Sprite&, const Sprite&, const Sprite&);
-    void process();
-    void update();
+    void process(FishManager &);
+    void update(FishManager &);
     void draw(World &);
 
     //inline mode functions
     void boat();
     void sit();
-    void reel();
+    void cast(FishManager &);
+    void reel(FishManager &);
 
     Mode mode();
-    void cast();
     void damage();
     void addPoints(int);
     int meter() const;
@@ -73,19 +70,15 @@ private:
 
     //inline helper functions
     void rowBoat();
-    void castLine();
     //void fishFaster();
     //void fishSlower();
-    void reelLine();
 
     void boatingProcess();
-    void sittingProcess();
-    void castingProcess();
-    void reelingProcess();
+    void sittingProcess(FishManager &);
+    void fishingProcess(FishManager &);
 
     void boatingUpdate();
-    void castingUpdate();
-    void reelingUpdate();
+    void fishingUpdate(FishManager &);
 
     void drawBoating(World &world);
     void drawFishing(World &world);
@@ -106,36 +99,25 @@ inline void Player::sit() {
     mode_ = Mode::sitting;
 }
 
-inline void Player::cast() {
-    mode_ = Mode::casting;
-    cerr << "Player::cast()" << endl;
-    hook.home_x = (hook.current_hook.head_x) 
-                = (first_x_ + (is_rightward_ - 1 & PlayerConstant::PLAYER_WIDTH - 1));
-    cerr << "Player::cast() before castLine()" << endl;
-
-    hook.current_hook.head_y = hook.home_y = first_y_;
-    castLine();
+inline void Player::cast(FishManager &fish_manager) {
+    mode_ = Mode::fishing;
+    fish_manager.castHook(
+        first_x_ + (is_rightward_ - 1 & PlayerConstant::PLAYER_WIDTH - 1),
+        first_y_);
 }
 
-inline void Player::reel() {
-    mode_ = Mode::reeling;
-    reelLine();
+inline void Player::reel(FishManager &fish_manager) {
+    fish_manager.reelHook();
 }
 
-// boat helper functions -----------------------------
+// boating helper functions -----------------------------
 
 inline void Player::rowBoat() {
     boating_speed_ = PlayerConstant::MAX_BOATING_SPEED;
     boating_stop_delay_ = PlayerConstant::MAX_BOATING_STOP_DELAY;
 }
 
-// cast helper functions -----------------------------
-
-inline void Player::castLine() {
-    cerr << "Player::castLine()" << endl;
-    is_upward_ = false;
-//    fishing_delay_ = PlayerConstant::MAX_FISHING_DELAY;
-}
+// fishing helper functions -----------------------------
 
 //inline void Player::fishFaster() {
 //    --fishing_delay_;
@@ -145,11 +127,6 @@ inline void Player::castLine() {
 //    ++fishing_delay_;
 //}
 
-// reel helper functions -----------------------------
-
-inline void Player::reelLine() {
-    is_upward_ = true;
-}
 
 // update helper functions ---------------------------
 

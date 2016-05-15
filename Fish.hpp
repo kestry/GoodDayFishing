@@ -7,7 +7,7 @@
 #include <iostream>
 using namespace std;
 enum class SwallowSize{
-    hook,       //j
+    nothing,       //j
     starfish,   //*
     //jellyfish,  //Q
     goldfish,   //o<
@@ -46,8 +46,6 @@ class Fish {
 public:
     int head_x;
     int head_y;
-    int x_velocity;
-    int y_velocity;
     FishState state;
     const FishSpecies* species;
 
@@ -55,21 +53,27 @@ public:
     Fish(const FishSpecies &species);
     
     void update();
+    void draw(World &world);
 
     void revive();
-    void capture();
+    void reverse();
+    void sink();
+    void reel();
     void kill();
 
-    int width();
-    
-    void swapDirection();
-    void draw(World &world);
-    void killOffscreenFish();
-
+    int width() const;
+    bool isLeftward() const;
+    bool isUpward() const;
 private:
-    int is_leftward_;
+    bool is_leftward_;
+    int x_velocity_;
+    int y_velocity_;
+
+    void killOffscreenFish();
 };
-inline void Fish::swapDirection() { x_velocity = -x_velocity; }
-inline int Fish::width() { return species->sprite_left.size(); }
+
+inline int Fish::width() const { return species->sprite_left.size(); }
+inline bool Fish::isLeftward() const { return is_leftward_; }
+inline bool Fish::isUpward() const { return -1 == y_velocity_; }
 
 #endif

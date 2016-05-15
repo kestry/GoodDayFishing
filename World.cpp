@@ -13,7 +13,7 @@ using namespace WorldConstant;
 
 World::World() 
     : mt_engine_(random_seed_())
-    , inclusive_stage_x_distribution_(STAGE_FIRST_X, STAGE_LAST_X)
+    , inclusive_stage_x_distribution_(STAGE_FIRST_X + 1, STAGE_LAST_X - 1)
     , inclusive_bool_distribution_(0, 1) 
     , isEbb_(false)
     , ebbDelay_(6)

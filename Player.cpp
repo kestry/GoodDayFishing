@@ -11,8 +11,6 @@
 //             2) error with sprite design
 //             3) player width/height != sprite width/height
 #include "Player.hpp"
-#include <iostream>
-using namespace std;
 using namespace PlayerConstant;
 
 Player::Player(const Sprite &boating_left_sprite,
@@ -118,26 +116,7 @@ void Player::boatingUpdate() {
     }
 }
 
-//cast state --> reel state if:
-//1. hit sea floor
-//2. catch fish
-//    fish becomes hook
-//    Process:
-//    - fish check for hook
-//      - if (fish.head_y == hook.head_y && fish.head_x in hook width range) {
-//      -   hook.setHasCaught(true);
-//      -   hook.setSprite(Sprite*);
-//        }
-//      - hook.draw();
-//    - hook check for fish
-//      - findFishHeadX(hook.head_y)
-//      - if (fish.head_y == hook.head_y && fish.head_x in hook width range) {
-//      -   hook.setHasCaught(true);
-//      -   hook.setSprite(Sprite*);
-//        }
-//      - hook.draw();
 void Player::fishingUpdate(FishManager &fish_manager) {
-    cerr << "Player::castingUpdate(World &world)" << endl;
     if (!fish_manager.isFishing()) {
         sit();
         return;

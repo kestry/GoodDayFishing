@@ -28,6 +28,7 @@ public:
     void sink();
     void reel();
     void kill();
+    void animate();
 
     int width() const;
     bool isLeftward() const;
@@ -37,11 +38,12 @@ private:
     int x_velocity_;
     int y_velocity_;
 
-    void killOffscreenFish();
+    void killOffscreen();
 };
 
 inline int Fish::width() const { return species->sprite_left.size(); }
 inline bool Fish::isLeftward() const { return is_leftward_; }
 inline bool Fish::isUpward() const { return -1 == y_velocity_; }
+inline void Fish::animate() { is_leftward_ = !is_leftward_; }
 
 #endif

@@ -54,6 +54,7 @@ public:
 
     //inline public functions
     void    swap();
+    char    tile(int x, int y);
     void    drawTile(char, int x, int y);
     void    ebb();
     size_t     randomStageX();
@@ -91,6 +92,7 @@ private:
 static BOOL gotoxy(const WORD x, const WORD y);
 
 inline void World::swap() { backBuffer_ = 1 - backBuffer_; }
+inline char World::tile(int x, int y) { return buffers_[frontBuffer()][y][x]; }
 inline void World::drawTile(char c, int x, int y) { buffers_[backBuffer()][y][x] = c; }
 inline void World::ebb() { isEbb_ = !isEbb_; }
 

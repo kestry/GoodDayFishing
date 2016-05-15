@@ -19,6 +19,8 @@ namespace SpriteConstant {
     const std::string FILE_EXTENSION = ".txt";
     const char SOLID_WHITE_CHAR = '#';
     const char TRANSPARENT_CHAR = ' ';
+    const char TRANSPARENT_CHAR2 = '$';
+
 }
 
 class Sprite {

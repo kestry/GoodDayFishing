@@ -80,6 +80,7 @@ bool Sprite::draw(World &world, int stage_x0, int stage_y0) const {
             char ch = sprite_[y][x];
             switch (ch) {
             case SpriteConstant::TRANSPARENT_CHAR:
+            case SpriteConstant::TRANSPARENT_CHAR2:
                 break;
             case SpriteConstant::SOLID_WHITE_CHAR:
                 ch = ' ';

@@ -16,7 +16,7 @@ namespace SpeciesConstant {
     const int NUM_HOOK_SPECIES = 1;
     const int NUM_FISH_SPECIES = 5;
     const int NUM_SPECIES = NUM_BIRD_SPECIES + NUM_POOP_SPECIES +
-        NUM_HOOK_SPECIES + NUM_FISH_SPECIES;
+                NUM_HOOK_SPECIES + NUM_FISH_SPECIES;
     const int I_BIRD_SPECIES = 0;
     const int I_POOP_SPECIES = 1;
     const int I_HOOK_SPECIES = 2;
@@ -52,7 +52,10 @@ namespace GameObjectConstant {
 
     //=======================================
     //Adjustable Quality of Life Constants
-    const int MAX_NEW_FISH_PER_UPDATE = 7;
+    const int MAX_NEW_FISH_PER_UPDATE = 2;
+    const int BIRD_SPAWN_ODDS_PER_UPDATE = 2; //higher = lower chance; (1 in ODDS chance)
+    const int POOP_SPAWN_ODDS_PER_UPDATE = 2; //higher = lower chance; (1 in ODDS chance)
+    const int BIRD_ANIMATION_DELAY = 2;
 }
 
 class FishManager {
@@ -60,62 +63,77 @@ public:
     FishManager(World &);
     FishManager(const FishManager &) = delete;
     ~FishManager();
-    FishManager &operator=(const FishManager &) = delete;
+    FishManager     &operator=(const FishManager &) = delete;
 
-    void update();
-    void generateBird(World &);
-    void generateFish(World &);
-    void draw(World &);
+    void            update();
+    void            regenerate(World &);
+    void            draw(World &);
 
-    void castHook(int home_x, int home_y);
-    void reelHook();
-    
-    bool isFishing();
-    bool isFishingCollision();
-    int points() const;
+    void            castHook(int home_x, int home_y);
+    void            reelHook();                         //inline
+    bool            isFishing();                        //inline
+    bool            isFishingCollision();
+    bool            isPlayerHeadCollision();
+    int             points() const;                     //inline
 
 private:
-    int numHooked_;
-    int home_x_;
-    int home_y_;
+    int bird_animation_delay_;
+    int numHooked_;                 //used as a multiplier in points()
+    int hook_home_x_;
+    int hook_home_y_;
     Species* fish_species_array_;
     Fish* fish_array_;
+    Fish* bird_;
+    Fish* poop_;
     Fish* hook_;
+    std::uniform_int_distribution<int> inclusive_bird_odds_distribution_;
+    std::uniform_int_distribution<int> inclusive_poop_odds_distribution_;
     std::uniform_int_distribution<int> inclusive_species_distribution_;
     std::uniform_int_distribution<int> inclusive_base_y_distribution_;
 
-    //inline private functions
-    void restHook();
-    const Species& randomSpecies(World &world) const;
-    size_t randomBaseY(World &world);
-
     //init functions
-    void loadSpecies();
-    void loadOneSpecies(int index, std::string name,
-        std::string ascii_left, std::string ascii_right, SwallowSize swallow_size, int poinsts);
-    void generateInitialFish(World &);
-    
-    //generators
-    void generateOneFish(int, World &);
+    void            initialize();
+    void            loadSpecies();
+    void            loadOneSpecies(int, std::string, std::string, std::string, SwallowSize, int);
+    void            generateInitialFish(World &);
 
-    //update  functions
-    void checkHookPosition();
-    bool isReeling();
+    //generators
+    void            generateBird(World &);
+    void            generatePoop(World &);
+    void            generateFish(World &);
+    void            generateOneFish(int, World &);
+    void            setInitialX(Fish&);      //sets at initial spawn x of Fish
+
+    //random number generators
+    const Species&  randomSpecies(World &world) const;  //inline
+    size_t          randomBaseY(World &world);          //inline
+    size_t          randomBirdSpawn(World &world);      //inline
+    size_t          randomPoopSpawn(World &world);      //inline
+
+    //update helper functions
+    void            animateBird();
+    bool            isReeling();                        //inline
+    void            restHook();                         //inline
+    void            checkHookPosition();
+    void            checkPoopPosition();
 
     //collision helper functions
-    bool hasBittenLength(const Fish&) const;
-    void doCatch(Fish* fish);
+    bool            hasBittenLength(const Fish&) const;
+    void            doCatch(Fish* fish);
 };
-inline bool FishManager::isReeling() { return hook_->isUpward(); }
-inline bool FishManager::isFishing() { return hook_->state != FishState::dead; }
-
-
-inline void FishManager::reelHook() { hook_->reel(); }
-inline void FishManager::restHook() { hook_->kill(); }
 inline int FishManager::points() const { return numHooked_ * hook_->species->points; }
+
+inline void FishManager::restHook() { hook_->kill(); }
+
+inline bool FishManager::isFishing() { return hook_->state != FishState::dead; }
+inline bool FishManager::isReeling() { return hook_->isUpward(); }
+
 
 inline const Species& FishManager::randomSpecies(World &world) const {
     return fish_species_array_[inclusive_species_distribution_(world.engine())];
 }
 inline size_t FishManager::randomBaseY(World &world) { return inclusive_base_y_distribution_(world.engine()); }
+inline size_t FishManager::randomBirdSpawn(World &world) { return inclusive_bird_odds_distribution_(world.engine()); }
+inline size_t FishManager::randomPoopSpawn(World &world) { return inclusive_poop_odds_distribution_(world.engine()); }
+
 #endif

@@ -38,7 +38,8 @@ Game::Game()
 
 void Game::init() {
     world_->update();
-    fish_manager_->generateFish(*world_);
+    //needed for first hook somehow...
+    //fish_manager_->regenerate(*world_);
     draw();
 }
 
@@ -50,7 +51,7 @@ void Game::process() {
 }
 
 void Game::update() {
-    fish_manager_->generateFish(*world_);
+    fish_manager_->regenerate(*world_);
     world_->update();
     fish_manager_->update();
     player_->update(*fish_manager_);
@@ -80,13 +81,12 @@ void Game::run() {
         accumulatedTime += elapsedTime;
         process();
         while (accumulatedTime >= TIME_PER_UPDATE) {
-            cout << "update" << endl;
             update();
             accumulatedTime -= TIME_PER_UPDATE;
             gameTime += TIME_PER_UPDATE;
         }
         render();
         this_thread::sleep_for(chrono::milliseconds(100));
-        cout << "test2" << gameTime << endl;
+        cout << "test4" << gameTime << endl;
     }
 }

@@ -70,10 +70,16 @@ void Game::draw() {
 void Game::lateUpdate() {
     fish_manager_->lateUpdate(*world_);
     player_->lateUpdate(*fish_manager_);
-    cout << player_->health() << endl;
+    if (isPoopHeadCollision()) {
+        player_->damage();
+    }
     if (player_->health() <= 0) {
         state_ = GameState::game_over;
     }
+}
+
+bool Game::isPoopHeadCollision() {
+    return fish_manager_->isPoopCollision(player_->headX(), player_->headY());
 }
 
 void Game::lateDraw() {
@@ -107,6 +113,9 @@ void Game::run() {
         }
         render();
         this_thread::sleep_for(chrono::milliseconds(200));
-        //cout << "test4" << gameTime << endl;
     }
+    if (GameState::game_over == state_) {
+        cout << "Bad Day! Would you like to play again?" << endl;
+    }
+    cout << "Thank you for playing" << endl;
 }

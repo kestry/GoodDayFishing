@@ -33,6 +33,7 @@ private:
     void    update();
     void    draw();
     void    lateUpdate();
+    bool    isPoopHeadCollision();
     void    lateDraw();
 
     void    render();

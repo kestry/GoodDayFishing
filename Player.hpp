@@ -46,8 +46,12 @@ public:
     void cast(FishManager &);
     void reel(FishManager &);
 
-    Mode mode();
+    Mode mode() const;
     int health() const;
+    int headX() const;
+    int headY() const;
+    void damage();
+
 private:
     Mode mode_;
     bool is_rightward_;
@@ -56,8 +60,6 @@ private:
     //int fishing_delay_;
     int boating_speed_;
     int boating_stop_delay_;
-    int head_x_;
-    int head_y_;
     int first_x_;
     int first_y_;
     int score_;
@@ -84,13 +86,12 @@ private:
 };
 
 // inline mode functions ----------------------------------
-inline Mode Player::mode() {
+inline Mode Player::mode() const {
     return mode_;
 }
 
 inline void Player::boat() {
     mode_ = Mode::boating;
-    ++head_y_;
     boating_speed_ = 0;
 }
 
@@ -120,6 +121,17 @@ inline int Player::health() const {
     return health_;
 }
 
+inline int Player::headX() const {
+    return first_x_ + 3 + is_rightward_;
+}
+
+inline int Player::headY() const {
+    return first_y_ + (mode_ != Mode::boating);
+}
+
+inline void Player::damage(){
+    --health_;
+}
 // fishing helper functions -----------------------------
 
 //inline void Player::fishFaster() {

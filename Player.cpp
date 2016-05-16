@@ -61,7 +61,6 @@ void Player::boatingProcess() {
     }
     if (GetAsyncKeyState(VK_DOWN)) {
         sit();
-        --head_y_;
     }
     return;
 }
@@ -128,7 +127,7 @@ void Player::fishingUpdate(FishManager &fish_manager) {
 }
 
 void Player::lateUpdate(FishManager &fish_manager) {
-    if (fish_manager.isPoopCollision(head_x_, head_y_)) {
+    if (fish_manager.isPoopCollision(headX(), headY())) {
         --health_;
     }
 }

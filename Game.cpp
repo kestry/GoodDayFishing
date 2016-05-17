@@ -6,10 +6,11 @@
 //created April 2016
 
 #include <chrono>
-#include <iostream>
+
 #include <thread>
 #include "Windows.h"
 #include "Game.hpp"
+#include "MessageSystem.hpp"
 using namespace std;
 using std::chrono::milliseconds;
 
@@ -17,7 +18,7 @@ typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::high_resolution_clock::time_point Time_point;
 typedef std::chrono::duration<double, std::chrono::seconds::period> TimeInSeconds;
 
-const double TIME_PER_UPDATE(.3); //time in seconds
+const double TIME_PER_UPDATE(.25); //time in seconds
 
 const int NUM_PLAYER_SPRITES = 4;
 const std::string PLAYER_FILENAMES[] = { "assets/boating_left.txt"
@@ -28,7 +29,7 @@ const std::string PLAYER_FILENAMES[] = { "assets/boating_left.txt"
 Game::Game()
     : world_(new World)
     , player_sprites_(new Sprite[NUM_PLAYER_SPRITES])
-    , fish_manager_(new FishManager(*world_))
+    , game_object_manager_(new GameObjectManager(*world_))
     , state_(GameState::running) {
     for (int i = 0; i < NUM_PLAYER_SPRITES; i++) {
         player_sprites_[i].load(PLAYER_FILENAMES[i]);
@@ -36,10 +37,12 @@ Game::Game()
     player_ = make_unique<Player>(player_sprites_[0], player_sprites_[1], player_sprites_[2], player_sprites_[3]);
 }
 
+//default ~Game(): unique pointers will destroy objects
+
 void Game::init() {
     world_->update();
     //needed for first hook somehow...
-    fish_manager_->regenerate(*world_);
+    game_object_manager_->regenerate(*world_);
     draw();
     world_->swap();
 }
@@ -48,28 +51,28 @@ void Game::process() {
     if (GetAsyncKeyState(VK_ESCAPE)) {
         state_ = GameState::exit;
     }
-    player_->process(*fish_manager_);
+    player_->process(*game_object_manager_);
 }
 
 void Game::update() {
     //regenerate world
-    fish_manager_->regenerate(*world_);
+    game_object_manager_->regenerate(*world_);
 
     //update world
     world_->update();
-    fish_manager_->update();
-    player_->update(*fish_manager_);
+    game_object_manager_->update();
+    player_->update(*game_object_manager_);
 }
 
 void Game::draw() {
     world_->draw();
-    fish_manager_->draw(*world_);
+    game_object_manager_->draw(*world_);
     player_->draw(*world_);
 }
 
 void Game::lateUpdate() {
-    fish_manager_->lateUpdate(*world_);
-    player_->lateUpdate(*fish_manager_);
+    game_object_manager_->lateUpdate(*world_);
+    player_->lateUpdate(*game_object_manager_);
     if (isPoopHeadCollision()) {
         player_->damage();
     }
@@ -79,17 +82,17 @@ void Game::lateUpdate() {
 }
 
 bool Game::isPoopHeadCollision() {
-    return fish_manager_->isPoopCollision(player_->headX(), player_->headY());
+    return game_object_manager_->isPoopCollision(player_->headX(), player_->headY());
 }
 
 void Game::lateDraw() {
-    fish_manager_->lateDraw(*world_);
+    game_object_manager_->lateDraw(*world_);
     world_->swap();
 }
 
 void Game::render() {
     world_->render();
-    fish_manager_->draw(*world_);
+    game_object_manager_->draw(*world_);
 }
 
 void Game::run() {
@@ -112,10 +115,8 @@ void Game::run() {
             lateDraw();
         }
         render();
+        message_system_.displayHealthMeter(player_->health(), player_->score());
         this_thread::sleep_for(chrono::milliseconds(200));
     }
-    if (GameState::game_over == state_) {
-        cout << "Bad Day! Would you like to play again?" << endl;
-    }
-    cout << "Thank you for playing" << endl;
+
 }

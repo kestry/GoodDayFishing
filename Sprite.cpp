@@ -54,22 +54,14 @@ bool Sprite::draw(World &world, int stage_x0, int stage_y0) const {
     bool isFullDraw = true;
     int sprite_first_x = 0;
     int sprite_max_last_x = max_width_ - 1;
-    //partial drawing:
-    //  start_x = 0 if stage_x0 > STAGE_FIRST_X, else
-    //          = stage_first_x - stage_x0
-    //   last_x = sprite_[y].size() - 1 if sprite_[y].size() - 1 + stage_x0 < STAGE_LAST_X, else
-    //          = stage_first_x - stage_x0
-    //truncated front partial draw
+
+    //determine first sprite_x to start drawing from
     if (stage_x0 < WorldConstant::STAGE_FIRST_X) {
         isFullDraw = false;
         sprite_first_x = WorldConstant::STAGE_FIRST_X - stage_x0;
     }
-    //truncated rear partial draw
-    //0 1 2 3 4 5 6
-    //  x0
-    //      wn
-    //        xn    //size = 4
-    //
+
+    //determine last sprite_x to draw to
     if (sprite_max_last_x + stage_x0 > WorldConstant::STAGE_LAST_X) {
         isFullDraw = false;
         sprite_max_last_x = sprite_max_last_x - (sprite_max_last_x + stage_x0 - WorldConstant::STAGE_LAST_X);

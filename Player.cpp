@@ -34,16 +34,16 @@ Player::Player(const Sprite &boating_left_sprite,
     , fishing_right_sprite_(fishing_right_sprite)
 { }
 
-void Player::process(FishManager &fish_manager) {
+void Player::process(GameObjectManager &GameObject_manager) {
     switch (mode_) {
     case Mode::boating:
         boatingProcess();
         break;
     case Mode::sitting:
-        sittingProcess(fish_manager);
+        sittingProcess(GameObject_manager);
         break;
     case Mode::fishing:
-        fishingProcess(fish_manager);
+        fishingProcess(GameObject_manager);
         break;
     default:
         break;
@@ -65,25 +65,25 @@ void Player::boatingProcess() {
     return;
 }
 
-void Player::sittingProcess(FishManager &fish_manager) {
+void Player::sittingProcess(GameObjectManager &GameObject_manager) {
     if (GetAsyncKeyState(VK_UP)) {
         boat();
         return;
     }
     if (GetAsyncKeyState(VK_DOWN)) {
-        cast(fish_manager);
+        cast(GameObject_manager);
         return;
     }
 }
 
-void Player::fishingProcess(FishManager &fish_manager) {
+void Player::fishingProcess(GameObjectManager &GameObject_manager) {
     if (GetAsyncKeyState(VK_UP)) {
-        reel(fish_manager);
+        reel(GameObject_manager);
         return;
     }
 }
 
-void Player::update(FishManager &fish_manager) {
+void Player::update(GameObjectManager &GameObject_manager) {
     //++frames_;
     switch (mode_) {
     case Mode::boating:
@@ -92,7 +92,7 @@ void Player::update(FishManager &fish_manager) {
     case Mode::sitting:
         return;
     case Mode::fishing:
-        fishingUpdate(fish_manager);
+        fishingUpdate(GameObject_manager);
         return;
     }
     return;
@@ -115,19 +115,19 @@ void Player::boatingUpdate() {
     }
 }
 
-void Player::fishingUpdate(FishManager &fish_manager) {
-    if (!fish_manager.isFishing()) {
+void Player::fishingUpdate(GameObjectManager &GameObject_manager) {
+    if (!GameObject_manager.isFishing()) {
         sit();
         return;
     }
-    if (fish_manager.isFishingCollision()) {
-        score_ += fish_manager.points();
+    if (GameObject_manager.isFishingCollision()) {
+        score_ += GameObject_manager.points();
     }
     return;
 }
 
-void Player::lateUpdate(FishManager &fish_manager) {
-    if (fish_manager.isPoopCollision(headX(), headY())) {
+void Player::lateUpdate(GameObjectManager &GameObject_manager) {
+    if (GameObject_manager.isPoopCollision(headX(), headY())) {
         --health_;
     }
 }

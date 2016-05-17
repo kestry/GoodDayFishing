@@ -8,10 +8,10 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include "FishManager.hpp"
+#include "GameObjectManager.hpp"
 #include "Sprite.hpp"
 
-class FishManager;
+class GameObjectManager;
 
 enum class Mode {
     boating,
@@ -26,7 +26,6 @@ namespace PlayerConstant {
     const int MIN_FIRST_Y = WorldConstant::WATER_Y - PLAYER_HEIGHT + 1;
     const int MAX_FIRST_X = WorldConstant::DOCK_X - PLAYER_WIDTH + 5;
     const int MAX_FIRST_Y = MIN_FIRST_Y;
-    //const int MAX_FISHING_DELAY = 3;
     const int MAX_BOATING_SPEED = 3;
     const int MAX_BOATING_STOP_DELAY = 6;
     const int FULL_HEALTH = 3;
@@ -35,19 +34,20 @@ namespace PlayerConstant {
 class Player {
 public:
     Player(const Sprite&, const Sprite&, const Sprite&, const Sprite&);
-    void process(FishManager &);
-    void update(FishManager &);
-    void lateUpdate(FishManager &);
+    void process(GameObjectManager &);
+    void update(GameObjectManager &);
+    void lateUpdate(GameObjectManager &);
     void draw(World &);
 
     //inline mode functions
     void boat();
     void sit();
-    void cast(FishManager &);
-    void reel(FishManager &);
+    void cast(GameObjectManager &);
+    void reel(GameObjectManager &);
 
     Mode mode() const;
     int health() const;
+    int score() const;
     int headX() const;
     int headY() const;
     void damage();
@@ -56,8 +56,6 @@ private:
     Mode mode_;
     bool is_rightward_;
     bool is_upward_;
-    //int frames_;
-    //int fishing_delay_;
     int boating_speed_;
     int boating_stop_delay_;
     int first_x_;
@@ -75,11 +73,11 @@ private:
     //void fishSlower();
 
     void boatingProcess();
-    void sittingProcess(FishManager &);
-    void fishingProcess(FishManager &);
+    void sittingProcess(GameObjectManager &);
+    void fishingProcess(GameObjectManager &);
 
     void boatingUpdate();
-    void fishingUpdate(FishManager &);
+    void fishingUpdate(GameObjectManager &);
 
     void drawBoating(World &world);
     void drawFishing(World &world);
@@ -99,15 +97,15 @@ inline void Player::sit() {
     mode_ = Mode::sitting;
 }
 
-inline void Player::cast(FishManager &fish_manager) {
+inline void Player::cast(GameObjectManager &GameObject_manager) {
     mode_ = Mode::fishing;
-    fish_manager.castHook(
+    GameObject_manager.castHook(
         first_x_ + (is_rightward_ - 1 & PlayerConstant::PLAYER_WIDTH - 1),
         first_y_);
 }
 
-inline void Player::reel(FishManager &fish_manager) {
-    fish_manager.reelHook();
+inline void Player::reel(GameObjectManager &GameObject_manager) {
+    GameObject_manager.reelHook();
 }
 
 // boating helper functions -----------------------------
@@ -121,6 +119,10 @@ inline int Player::health() const {
     return health_;
 }
 
+inline int Player::score() const {
+    return score_;
+}
+
 inline int Player::headX() const {
     return first_x_ + 3 + is_rightward_;
 }
@@ -132,18 +134,5 @@ inline int Player::headY() const {
 inline void Player::damage(){
     --health_;
 }
-// fishing helper functions -----------------------------
-
-//inline void Player::fishFaster() {
-//    --fishing_delay_;
-//}
-//
-//inline void Player::fishSlower() {
-//    ++fishing_delay_;
-//}
-
-
-// update helper functions ---------------------------
-
 
 #endif

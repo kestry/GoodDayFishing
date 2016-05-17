@@ -46,3 +46,10 @@ World.cpp
 
 Constants.hpp
 #include <string>
+
+
+Health - display
+Color?
+
+Points - display
+

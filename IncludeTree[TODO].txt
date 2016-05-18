@@ -1,6 +1,5 @@
 main.cpp
 #include "Game.hpp"
-using namespace std;
 
 Game.hpp                    
 #include "Player.hpp"       

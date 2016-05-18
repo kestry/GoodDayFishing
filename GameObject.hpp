@@ -1,3 +1,10 @@
+//GameObject.cpp  -- header file for GameObject class
+//updated 2016/05/16
+
+//Good Day Fishing 
+//a game written by Jean Park
+//created April 2016
+
 #ifndef GAME_OBJECT_HPP
 #define GAME_OBJECT_HPP
 

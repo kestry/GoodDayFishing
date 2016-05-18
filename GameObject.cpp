@@ -1,3 +1,10 @@
+//GameObject.cpp  -- implementation file for GameObject class
+//updated 2016/05/16
+
+//Good Day Fishing 
+//a game written by Jean Park
+//created April 2016
+
 #include "GameObject.hpp"
 
 GameObject::GameObject() 

@@ -52,13 +52,16 @@ public:
     void    draw();
     void    render();
 
+    void    drawBorders();
+    void    clearStage();
+
     //inline public functions
     void    swap();
     char    tile(int x, int y);
     void    drawTile(char, int x, int y);
     void    ebb();
-    size_t     randomStageX();
-    size_t     randomBool();
+    size_t  randomStageX();
+    size_t  randomBool();
     std::mt19937& engine();
 
 private:
@@ -80,11 +83,7 @@ private:
     int     backBuffer() const;
     int     frontBuffer();
 
-    //initiators
-    void    initBorders();
-
     //render helper functions
-    void    clearStage();
     void    drawWater();
     void    drawDock();
 };

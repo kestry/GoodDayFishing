@@ -1,5 +1,5 @@
 //Player.cpp  -- implementation file for Player class
-//updated 2016/05/09
+//updated 2016/05/16
 
 //Good Day Fishing 
 //a game written by Jean Park
@@ -20,8 +20,6 @@ Player::Player(const Sprite &boating_left_sprite,
     : mode_(Mode::boating)
     , is_rightward_(false)
     , is_upward_(true)
-    //, frames_(0)
-    //, fishing_delay_(MAX_FISHING_DELAY)
     , boating_speed_(0)
     , boating_stop_delay_(MAX_BOATING_STOP_DELAY)
     , first_x_(MAX_FIRST_X)
@@ -33,6 +31,19 @@ Player::Player(const Sprite &boating_left_sprite,
     , fishing_left_sprite_(fishing_left_sprite)
     , fishing_right_sprite_(fishing_right_sprite)
 { }
+
+void Player::reset() {
+    first_x_ = MAX_FIRST_X;
+    first_y_ = MAX_FIRST_Y;
+    boating_speed_ = 0;
+    boating_stop_delay_ = MAX_BOATING_STOP_DELAY;
+    is_rightward_ = false;
+    mode_ = Mode::boating;
+    score_ = 0;
+    health_ = FULL_HEALTH;
+    boating_stop_delay_ = MAX_BOATING_STOP_DELAY;
+}
+
 
 void Player::process(GameObjectManager &GameObject_manager) {
     switch (mode_) {
@@ -120,16 +131,7 @@ void Player::fishingUpdate(GameObjectManager &GameObject_manager) {
         sit();
         return;
     }
-    if (GameObject_manager.isFishingCollision()) {
-        score_ += GameObject_manager.points();
-    }
     return;
-}
-
-void Player::lateUpdate(GameObjectManager &GameObject_manager) {
-    if (GameObject_manager.isPoopCollision(headX(), headY())) {
-        --health_;
-    }
 }
 
 void Player::draw(World &world) {
@@ -148,3 +150,7 @@ void Player::drawFishing(World &world) {
         fishing_left_sprite_.draw(world, first_x_, first_y_);
 }
 
+void Player::drawPoopMessage(World& world){
+    PlayerConstant::POOP_MESSAGE.draw(world, ((is_rightward_) ? headX() + 3 :
+        first_x_), first_y_);
+}

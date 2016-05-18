@@ -1,0 +1,20 @@
+Reasons for annoying ";" error or linking errors:
+#include
+:: scope
+include inline in hpp
+delete inlilne in cpp
+exclude/include hpp/cpp file
+erase {
+wrong return type from copying
+
+Questions:
+Does implementing an object to a heap that has objects implemented on the heap have any downsides?
+Also, is it then better to implement on the stack and then have the overall system implement the items on the heap?
+
+2016/05/16
+Game.obj : error LNK2019: unresolved external symbol "public: void __thiscall Player::drawPoopMessage(class World &)" 
+(?drawPoopMessage@Player@@QAEXAAVWorld@@@Z) referenced in function "private: void __thiscall Game::handlePoopHeadCollision(void)" 
+(?handlePoopHeadCollision@Game@@AAEXXZ)
+
+solution: delete inline in cpp file
+

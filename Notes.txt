@@ -1,0 +1,20 @@
+//Good Day Fishing
+//written by Jean Park
+//created: 04/08/2016
+
+//a fishing game
+
+
+PoopHeadCollision and FishHookCollision:
+- better to trigger a flag and then refresh to clear flag
+- flag == bool or pending state?
+
+Consolidating Ticks
+- some kind of tick class/system?
+- at least a function
+
+
+WishList:
+- split Sprite into 1D and 2D classes with inheritance
+- colors
+

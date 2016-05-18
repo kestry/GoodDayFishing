@@ -1,5 +1,5 @@
 //Player.hpp  -- header file for Player class
-//updated 2016/05/09
+//updated 2016/05/16
 
 //Good Day Fishing 
 //a game written by Jean Park
@@ -29,6 +29,7 @@ namespace PlayerConstant {
     const int MAX_BOATING_SPEED = 3;
     const int MAX_BOATING_STOP_DELAY = 6;
     const int FULL_HEALTH = 3;
+    const Sprite POOP_MESSAGE("ew");
 }
 
 class Player {
@@ -38,6 +39,7 @@ public:
     void update(GameObjectManager &);
     void lateUpdate(GameObjectManager &);
     void draw(World &);
+    void reset();
 
     //inline mode functions
     void boat();
@@ -47,10 +49,11 @@ public:
 
     Mode mode() const;
     int health() const;
-    int score() const;
+    int& score();
     int headX() const;
     int headY() const;
     void damage();
+    void drawPoopMessage(World &);
 
 private:
     Mode mode_;
@@ -79,8 +82,8 @@ private:
     void boatingUpdate();
     void fishingUpdate(GameObjectManager &);
 
-    void drawBoating(World &world);
-    void drawFishing(World &world);
+    void drawBoating(World &);
+    void drawFishing(World &);
 };
 
 // inline mode functions ----------------------------------
@@ -119,7 +122,7 @@ inline int Player::health() const {
     return health_;
 }
 
-inline int Player::score() const {
+inline int& Player::score() {
     return score_;
 }
 
@@ -134,5 +137,7 @@ inline int Player::headY() const {
 inline void Player::damage(){
     --health_;
 }
+
+
 
 #endif

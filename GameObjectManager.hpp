@@ -1,5 +1,12 @@
-#ifndef GameObject_MANAGER_HPP
-#define GameObject_MANAGER_HPP
+//GameObjectManager.cpp  -- implementation file for GameObjectManager class
+//updated 2016/05/16
+
+//Good Day Fishing 
+//a game written by Jean Park
+//created April 2016
+
+#ifndef GAME_OBJECT_MANAGER_HPP
+#define GAME_OBJECT_MANAGER_HPP
 
 #include "GameObject.hpp"
 #include "Sprite.hpp"
@@ -28,7 +35,7 @@ namespace GameObjectManagerConstant {
     //Adjustable Y zones
     const int STAGE_BIRD_Y = WorldConstant::STAGE_FIRST_Y + 1;
     const int STAGE_MIN_FISH_Y = WorldConstant::WATER_Y + 1;
-    const int FISH_Y_SPACING = 2;
+    const int FISH_Y_SPACING = 1;
 
     //Number of Game Objects (in array)
     //(Note: must adjust index constants below)
@@ -77,6 +84,7 @@ public:
     bool            isFishingCollision();
     bool            isPoopCollision(int, int);
     int             points() const;                     //inline
+    std::string     currentCatch() const;                     //inline
 
 private:
     int bird_animation_delay_;
@@ -130,6 +138,7 @@ private:
 
 };
 inline int GameObjectManager::points() const { return numHooked_ * hook_->species->points; }
+inline std::string GameObjectManager::currentCatch() const { return hook_->species->name; }
 
 inline void GameObjectManager::restHook() { hook_->kill(); }
 

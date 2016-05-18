@@ -19,12 +19,12 @@ World::World()
     , ebbDelay_(6)
     , frames_(0)
     , backBuffer_(0) {
-    initBorders();
+    drawBorders();
 }
 
 // Initiators =============================================
 
-void World::initBorders() {
+void World::drawBorders() {
     //initializes frame for all buffers
     for (int i = 0; i < NUM_BUFFERS; i++) {
         //draw top and bottom borders

@@ -1,3 +1,10 @@
+//MessageSystem.cpp  -- implementation file for MessageSystem  class
+//written 2016/05/16
+
+//Good Day Fishing 
+//a game written by Jean Park
+//created April 2016
+
 #include <iostream>
 #include <iomanip>
 #include "MessageSystem.hpp"
@@ -5,10 +12,7 @@
 using namespace std;
 using namespace MessageSystemConstant;
 
-class player;
-class world;
-
-void MessageSystem::displayHealthMeter(int health, int score) {
+void MessageSystem::displayHealthMeter(int health, int score, const std::string &fish_name) {
     cout << "GOOD DAY: [";
     char bar = METER_CHAR;
     for (int i = 0; i < health; i++) {
@@ -17,6 +21,6 @@ void MessageSystem::displayHealthMeter(int health, int score) {
     for (int i = health; i < PlayerConstant::FULL_HEALTH; i++) {
         cout << ' ';
     }
-    cout << ']' << left << setw(WorldConstant::FRAME_WIDTH - GOOD_DAY_METER_DISPLAY_WIDTH - SCORE_DISPLAY_WIDTH) << "\t\t\t";
+    cout << "]\t\t\t" << left << setw(WorldConstant::FRAME_WIDTH - GOOD_DAY_METER_DISPLAY_WIDTH - SCORE_DISPLAY_WIDTH) << fish_name;
     cout << "score:" << setw(SCORE_SPACE) << right << score << endl;
 }

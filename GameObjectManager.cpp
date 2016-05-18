@@ -1,3 +1,10 @@
+//GameObjectManager.cpp  -- header file for GameObjectManager class
+//updated 2016/05/16
+
+//Good Day Fishing 
+//a game written by Jean Park
+//created April 2016
+
 #include "GameObjectManager.hpp"
 #include <iostream>
 using namespace std;
@@ -226,10 +233,9 @@ void GameObjectManager::draw(World &world) {
 }
 
 bool GameObjectManager::isPoopCollision(int x, int y) {
-    if (poop_->state == GameObjectState::pending &&
-        x == poop_->head_x &&
-        y == poop_->head_y) {
-        poop_->kill();
+    if (poop_->state == GameObjectState::pending
+        && x == poop_->head_x 
+        && y == poop_->head_y) {
         return true;
     }
     return false;
@@ -239,12 +245,12 @@ void GameObjectManager::lateUpdate(World &world) {
     switch (poopTile(world)) {
     case ' ':
         break;
-    case '-':
-    case '~':
-    case '_':
-        poop_->state = GameObjectState::dead;
+    case 'o':
+        poop_->state = GameObjectState::pending;
+        break;
     default:
         poop_->state = GameObjectState::pending;
+        break;
     }
 }
 
@@ -257,5 +263,6 @@ void GameObjectManager::lateDraw(World &world) {
         break;
     default:
         poop_->draw(world);
+        break;
     }
 }

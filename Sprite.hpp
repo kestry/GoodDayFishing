@@ -20,7 +20,6 @@ namespace SpriteConstant {
     const char SOLID_WHITE_CHAR = '#';
     const char TRANSPARENT_CHAR = ' ';
     const char TRANSPARENT_CHAR2 = '$';
-
 }
 
 class Sprite {

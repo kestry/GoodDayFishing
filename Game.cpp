@@ -10,7 +10,6 @@
 #include <thread>
 #include "Windows.h"
 #include "Game.hpp"
-#include "MessageSystem.hpp"
 using namespace std;
 using std::chrono::milliseconds;
 
@@ -21,10 +20,10 @@ typedef std::chrono::duration<double, std::chrono::seconds::period> TimeInSecond
 const double TIME_PER_UPDATE(.25); //time in seconds
 
 const int NUM_PLAYER_SPRITES = 4;
-const std::string PLAYER_FILENAMES[] = { "assets/boating_left.txt"
-, "assets/boating_right.txt"
-, "assets/fishing_left.txt"
-, "assets/fishing_right.txt" };
+const std::string PLAYER_FILENAMES[] = { "boating_left.txt"
+, "boating_right.txt"
+, "fishing_left.txt"
+, "fishing_right.txt" };
 
 Game::Game()
     : world_(new World)
@@ -175,8 +174,8 @@ void Game::run() {
     double accumulatedTime = 0.0;
     double gameTime = 0.0;
     do {
+        init();
         while (state_ == GameState::running) {
-            init();
             auto newTime = Clock::now();
             double elapsedTime = TimeInSeconds(newTime - currentTime).count();
             currentTime = newTime;
@@ -192,7 +191,7 @@ void Game::run() {
             }
             render();
             message_system_.displayHealthMeter(player_->health(), player_->score(), fish_name_);
-            this_thread::sleep_for(chrono::milliseconds(200));
+            this_thread::sleep_for(chrono::milliseconds(200));        
         }
         gameOverScreen();
     } while (GameState::exit != state_);

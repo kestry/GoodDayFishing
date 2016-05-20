@@ -9,10 +9,6 @@
 #define GAME_OBJECT_MANAGER_HPP
 
 #include "GameObject.hpp"
-#include "Sprite.hpp"
-
-class Player;
-class Hook;
 
 namespace SpeciesConstant {
     //NOTE: GameObject are the last segment for both species and game objects

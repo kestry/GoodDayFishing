@@ -1,4 +1,4 @@
-Reasons for annoying ";" error or linking errors:
+Reasons for ";" error or linking errors:
 #include
 :: scope
 include inline in hpp

@@ -8,7 +8,8 @@
 #include <iostream>
 #include <iomanip>
 #include "MessageSystem.hpp"
-#include "Player.hpp"
+#include "Player.hpp"           //only needed for Player Constant
+
 using namespace std;
 using namespace MessageSystemConstant;
 

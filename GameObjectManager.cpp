@@ -6,8 +6,6 @@
 //created April 2016
 
 #include "GameObjectManager.hpp"
-#include <iostream>
-using namespace std;
 
 GameObjectManager::GameObjectManager(World &world)
     : bird_animation_delay_(0)

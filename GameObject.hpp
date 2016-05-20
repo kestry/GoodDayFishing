@@ -9,7 +9,6 @@
 #define GAME_OBJECT_HPP
 
 #include "Species.hpp"
-#include "World.hpp"
 
 enum class GameObjectState {
     pending,    //transition state (example: poop pending death or draw)

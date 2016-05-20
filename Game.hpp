@@ -7,7 +7,7 @@
 #define GAME_HPP
 
 #include <memory>
-#include "GameObjectManager.hpp" 
+//#include "GameObjectManager.hpp" 
 #include "Player.hpp" 
 #include "MessageSystem.hpp"
 

@@ -10,7 +10,6 @@
 using namespace std;
 
 Sprite::Sprite() {
-
 }
 
 Sprite::Sprite(char c) {

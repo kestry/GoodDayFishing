@@ -9,7 +9,6 @@
 #define PLAYER_HPP
 
 #include "GameObjectManager.hpp"
-#include "Sprite.hpp"
 
 class GameObjectManager;
 
@@ -137,7 +136,5 @@ inline int Player::headY() const {
 inline void Player::damage(){
     --health_;
 }
-
-
 
 #endif

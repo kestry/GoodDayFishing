@@ -5,13 +5,13 @@ by Jean Park
 
 This is a fishing game that I made in memory of the good times I had as a child.
 
-Build:
+##Build:
 
 Just compile the all the source files, and then make sure to have the player assets 
 (boating-left.txt, boating-right.txt, fishing-left.txt, fishing-right.txt) 
 in the same foler as the .exe file.
 
-Gameplay:
+##Gameplay:
 
   Fish to your heart's content while dodging birds trying to ruin your day.
   
@@ -24,6 +24,6 @@ Gameplay:
 
 The spawn rate and world size are adjustable within the source code.
 
-To Do:
+###To Do:
 Organize source and assets into their own folders.
 Check segs again

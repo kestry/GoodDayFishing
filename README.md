@@ -2,9 +2,8 @@
 ######an ASCII Fishing Game
 ######by Jean Park, 2016
 
-This is a fishing game project that I made in memory of the good times I had as a child.
-Presented to my CS210 Data Structures class in Spring 2016.
-
+This is my CS210 Data Structures project written in memory of the good times I had as a child.
+Presented to the class in Spring 2016.  
 
 Special Thanks to Kasra Ferdowsifard for the generous help with the projector and laptop that day.
 And a shoutout to our 2015 team ByteSized with Sam Hutcher!! Woo!
@@ -29,7 +28,7 @@ in the same folder as the .exe file.
   + Pressing down once makes you sit.   
   + Pressing down again lets you fish.
   
-Once you're fishing, you can reel your line one time by pressing up.   
+Once you're fishing, you can reel your line a single time by pressing up.   
 
 
 Hitting the bottom of the ocean will also reel your line.  

@@ -1,5 +1,5 @@
 # Good Day Fishing
-######an Ascii Fishing Game
+######an ASCII Fishing Game
 ######by Jean Park, 2016
 
 This is a fishing game project that I made in memory of the good times I had as a child.

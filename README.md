@@ -7,7 +7,7 @@ Presented to my CS210 Data Structures class in Spring 2016.
 
 
 Special Thanks to Kasra Ferdowsifard for the generous help with the projector and laptop that day.
-And a shoutout to our team ByteSized with Sam Hutcher!! Woo!
+And a shoutout to our 2015 team ByteSized with Sam Hutcher!! Woo!
 
 ##Build:
 

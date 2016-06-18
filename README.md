@@ -15,15 +15,22 @@ in the same foler as the .exe file.
 
   Fish to your heart's content while dodging birds trying to ruin your day.
   
-  Esc to exit
-  
-  ArrowKeys:
-    left and right to move boat
-    down and up to sit and stand
-    down and up to cast and reel (once you're sitting)
+##Controls:
 
+  *Esc* - quits program
+  Everything else is done with arrow keys, dependent on what you're character is doing:
+  
+  You start in Boating mode which lets you move left and right.
+    * Pressing down once makes you sit. 
+    * Pressing down again lets you fish.
+  
+  Once you're fishing, you can reel your line one time by pressing up.  
+  Hitting the bottom of the ocean will also reel your line.
+
+##Adjustable values:
 The spawn rate and world size are adjustable within the source code.
 
 ###To Do:
 Organize source and assets into their own folders.
 Check segs again
+Include a compiled executable ready to play

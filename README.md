@@ -8,6 +8,7 @@ Presented to my CS210 Data Structures class in Spring 2016.
 
 
 Special Thanks to Kasra Ferdowsifard for the generous help with the projector and laptop that day.
+And a shoutout to our team ByteSized with Sam Hutcher!! Woo!
 
 ##Build:
 
@@ -39,8 +40,12 @@ Hitting the bottom of the ocean will also reel your line.
 The spawn rate and world size are adjustable within the source code.  
 
 
+##References:
+Game Programming Patterns by Robert Nystrom and further references within
+
 ###To Do:  
 + Include a compiled executable ready to play 
 + Organize source and assets into their own folders.  
 + Recheck segs.  
- 
+
+

@@ -38,7 +38,7 @@ Hitting the bottom of the ocean will also reel your line.
 
 
 ##Adjustable values:  
-The spawn rate and world size are adjustable within the source code.  
+Among everything else, the spawn rate and world size are adjustable within the source code.  
 
 
 ##References:

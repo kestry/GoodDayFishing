@@ -10,9 +10,12 @@ And a shoutout to our 2015 team ByteSized with Sam Hutcher!! Woo!
 
 ##Build:
 
-Compile the all the source files and then make sure to have the player assets 
+Compile all the source files and then make sure to have the player assets 
 (boating-left.txt, boating-right.txt, fishing-left.txt, fishing-right.txt) 
 in the same folder as the .exe file.
+
+
+Or go to [this link](https://drive.google.com/drive/u/0/folders/0BxEoycu0MQ7wZFloblptbFNOTVk "Google Drive - GoodDayFishing") and download the .exe and .txt files into the same folder to play the game.
 
 ##Gameplay:
 
@@ -42,7 +45,7 @@ The spawn rate and world size are adjustable within the source code.
 Game Programming Patterns by Robert Nystrom and further references within
 
 ###To Do:  
-+ Include a compiled executable ready to play 
++ Include a compiled executable in GitHub
 + Organize source and assets into their own folders.  
 + Recheck segs.  
 

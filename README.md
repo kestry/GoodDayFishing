@@ -14,9 +14,6 @@ Compile all the source files and then make sure to have the player assets
 (boating-left.txt, boating-right.txt, fishing-left.txt, fishing-right.txt) 
 in the same folder as the .exe file.
 
-
-Or go to [this link](https://drive.google.com/drive/u/0/folders/0BxEoycu0MQ7wZFloblptbFNOTVk "Google Drive - GoodDayFishing") and download the .exe and .txt files into the same folder to play the game.
-
 ##Gameplay:
 
   Fish to your heart's content while dodging birds trying to ruin your day.
